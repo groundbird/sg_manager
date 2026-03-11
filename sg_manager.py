@@ -48,13 +48,7 @@ def resolve_driver(args):
     if args.driver:
         return args.driver.lower()
 
-    if args.path:
-        p = args.path.lower()
-        if 'usb' in p or 'com' in p or 'acm' in p:
-            # pathだけでは断定できないので quicksyn を優先しつつ失敗時に valon にfallback
-            return 'auto'
-
-    return 'quicksyn'
+    return 'auto'
 
 
 def create_device(args):
