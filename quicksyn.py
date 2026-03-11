@@ -270,7 +270,7 @@ def path_fromserial(dirname, serialnum=None, showlist=False):
             qid = _q.get_id()
             if showlist:
                 ret += f'{_p}: {qid.serial_number} (model: {qid.model_number})\n'
-            elif serialnum is not None and qid.serial_number == serialnum:
+            elif serialnum is not None and str(qid.serial_number) == str(serialnum):
                 _q.close()
                 return _p
             elif serialnum is None and not showlist:
