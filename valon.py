@@ -228,6 +228,26 @@ class Valon5015(object):
             )
         self._send(self._format_frequency_command(frequency_hz))
 
+    def set_freq_mHz(self, freq_mHz):
+        self.set_frequency_hz(float(freq_mHz) / 1000.0)
+
+    def set_freq_str(self, freq_str):
+        m = re.match(
+            r'\s*([0-9]+(?:\.[0-9]+)?)\s*([kKmMgG]?[hH][zZ]|[kKmMgG])\s*$',
+            freq_str,
+        )
+        if m is None:
+            raise ValueError(f'Invalid frequency string: {freq_str}')
+        val = float(m.group(1))
+        unit = m.group(2).lower()
+        scale = {
+            'g': 1e9, 'ghz': 1e9,
+            'm': 1e6, 'mhz': 1e6,
+            'k': 1e3, 'khz': 1e3,
+            'hz': 1.0,
+        }[unit]
+        self.set_frequency_hz(val * scale)
+
     # ------------------------------------------------------------------
     # RF output
     # ------------------------------------------------------------------
@@ -242,6 +262,9 @@ class Valon5015(object):
         if not isinstance(enabled, bool):
             raise ValueError('enabled must be bool')
         self._send(f'OEN {1 if enabled else 0}')
+
+    def set_rfout(self, on=True):
+        self.set_rf_output_enabled(enabled=on)
 
     # ------------------------------------------------------------------
     # Power

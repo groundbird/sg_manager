@@ -166,6 +166,14 @@ class QuickSyn(object):
     def set_rfout(self, on=True):
         self._wr('0F01' if on else '0F00')
 
+    def set_rf_output_enabled(self, enabled=True):
+        self.set_rfout(on=enabled)
+
+    def set_power_dbm(self, power_dbm):
+        raise NotImplementedError(
+            'QuickSyn does not support RF power setting in this driver'
+        )
+
     def set_refout(self, on=True):
         self._wr('0801' if on else '0800')
 
