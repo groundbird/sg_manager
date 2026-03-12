@@ -6,8 +6,8 @@ from time import sleep
 from argparse import ArgumentParser
 from argparse import RawTextHelpFormatter
 
-from quicksyn import QuickSyn, FUnit as QFUnit, path_fromserial as quicksyn_path_fromserial, BASEDIR as QUICKSYN_BASEDIR
-from valon import Valon5015, path_fromserial as valon_path_fromserial
+from .quicksyn import QuickSyn, FUnit as QFUnit, path_fromserial as quicksyn_path_fromserial, BASEDIR as QUICKSYN_BASEDIR
+from .valon import Valon5015, path_fromserial as valon_path_fromserial
 
 
 def parse_bool_onoff(value):
@@ -132,13 +132,14 @@ def print_verbose(dev):
             print(f'{k}\t{v}')
 
 
-if __name__ == '__main__':
+def main():
     desc = (
         f'{__file__} [Args] [Options]\n'
         '- Supports QuickSyn FSL-0010 and Valon 5015\n'
         '- Detailed options -h or --help\n'
     )
-    parser = ArgumentParser(description=desc, formatter_class=RawTextHelpFormatter)
+    parser = ArgumentParser(description=desc,
+                            formatter_class=RawTextHelpFormatter)
 
     parser.add_argument('--driver',
                         type=str,
