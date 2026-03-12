@@ -291,5 +291,4 @@ def path_fromserial(dirname, serialnum=None, showlist=False):
     if showlist:
         return ret
 
-    print(f"ERROR:: Not found the serial# == {serialnum}")
-    sys.exit()
+    raise RuntimeError(f"QuickSyn not found for serial# == {serialnum}")
