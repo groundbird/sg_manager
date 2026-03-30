@@ -6,8 +6,8 @@ from time import sleep
 from argparse import ArgumentParser
 from argparse import RawTextHelpFormatter
 
-from .quicksyn import QuickSyn, FUnit as QFUnit, path_fromserial as quicksyn_path_fromserial, BASEDIR as QUICKSYN_BASEDIR
-from .valon import Valon5015, path_fromserial as valon_path_fromserial
+from quicksyn import QuickSyn, FUnit as QFUnit, path_fromserial as quicksyn_path_fromserial, BASEDIR as QUICKSYN_BASEDIR
+from valon import Valon5015, path_fromserial as valon_path_fromserial
 
 
 def parse_bool_onoff(value):
@@ -44,14 +44,14 @@ def list_devices():
         print('(not found)')
 
 
-def resolve_driver(args):
-    if args.driver:
+def resolve_driver(args=None):
+    if args is not None and args.driver:
         return args.driver.lower()
 
     return 'auto'
 
 
-def create_device(args):
+def create_device(args=None):
     driver = resolve_driver(args)
 
     if driver == 'quicksyn':
@@ -83,6 +83,8 @@ def create_device(args):
     if driver == 'auto':
         # quicksyn first
         try:
+            if args is None:
+                return QuickSyn()
             if args.path is not None:
                 return QuickSyn(path=args.path)
             elif args.serial is not None:
@@ -95,6 +97,9 @@ def create_device(args):
             pass
 
         try:
+            if args is None:
+                path = valon_path_fromserial()
+                return Valon5015(path=path)
             if args.path is not None:
                 return Valon5015(path=args.path)
             elif args.serial is not None:
@@ -326,3 +331,6 @@ def main():
 
     finally:
         dev.close()
+
+if __name__ == '__main__':
+    main()
